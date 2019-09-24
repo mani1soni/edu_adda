@@ -1,0 +1,31 @@
+pipeline {
+    agent
+    {
+        node {
+                label 'master'
+                customWorkspace "${env.JobPath}"
+              }
+    }
+
+    stages 
+    {
+        stage('Start') {
+            steps {
+                sh 'ls'
+            }
+        }
+
+        stage ('Invoke_pipeline') {
+            steps {
+                build job: 'Parallel-pipelines' //enter another pipelines name
+            }
+        }
+
+        stage('End') {
+            steps {
+                sh 'ls'
+            }
+        }
+    }
+}
+Link:---https://stackoverflow.com/questions/43337070/how-to-invoke-a-jenkins-pipeline-a-in-another-jenkins-pipeline-b

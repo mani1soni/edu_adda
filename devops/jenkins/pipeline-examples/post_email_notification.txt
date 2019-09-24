@@ -1,0 +1,34 @@
+pipeline{
+    agent any
+    stages{
+        stage("clone"){
+            steps{
+                sh "git clone https://github.com/mani1soni/Python-Scripts.git"
+            }
+        }
+        stage("Test"){
+            steps{
+                sh "python3 Python-Scripts/merge_sort.py"
+            }
+        }
+    }
+    post {
+        success {
+            emailext (
+                subject: 'Build Status SUCESSFUL',
+                body: 'Successfully build',
+                to:'put email here'
+                );
+               
+        }
+        failure {
+            emailext (
+                subject: 'Builld Status FAILED!',
+                body: "Build Fail",
+                to: "put email here"
+                );
+        }
+    }
+}
+    
+

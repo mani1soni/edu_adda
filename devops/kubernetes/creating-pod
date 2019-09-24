@@ -1,0 +1,5 @@
+kubectl create -f ./pod-example.yml(file Name)
+
+kubectl --namespace=podexample get pods
+
+kubectl --namespace=podexample delete pod examplepod

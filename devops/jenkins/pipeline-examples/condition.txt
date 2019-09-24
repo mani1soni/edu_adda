@@ -1,0 +1,36 @@
+pipeline {
+  environment {
+    //This variable need be tested as string
+    doError = ' '
+  }
+  agent any
+  stages {
+    stage('Test'){
+        steps{
+            sh "python Python-Scripts/fail.py"
+        }
+        
+    }
+    stage('Error') {
+      when {
+        expression { doError == '1' }
+      }
+      steps {
+        echo "Failure"
+      }
+    }
+    stage('Success') {
+      when {
+        expression { doError == '0' }
+      }
+      steps {
+        echo "ok"
+      }
+    }
+  }
+  post {
+    always {
+      echo "I will always execute this!"
+    }
+  }
+}

@@ -1,0 +1,51 @@
+1. Get the Docker gpg key:
+--> curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+2. Add Docker repo:
+--> sudo add-apt-repository    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+   $(lsb_release -cs) \
+   stable"
+
+3. Get the kubernetes key:
+--> curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+4. Add the k8s repo:
+--> cat << EOF | sudo tee /etc/apt/sources.list.d/kubernetes.list
+deb https://apt.kubernetes.io/ kubernetes-xenial main
+EOF
+
+5. update packages:
+--> sudo apt update
+
+6. Installing docker, kubelet, kubeadm and kubectl:
+--> sudo apt-get install -y docker-ce=18.06.1~ce~3-0~ubuntu kubelet=1.13.5-00 kubeadm=1.13.5-00 kubectl=1.13.5-00
+
+7. Hold them in current version:
+--> sudo apt-mark hold docker-ce kubelet kubeadm kubectl
+
+8. Add iptables rule to sysctl.conf:
+--> echo "net.bridge.bridge-nf-call-iptables=1" | sudo tee -a /etc/sysctl.conf
+
+9. Enable iptables immediately:
+--> sudo sysctl -p
+
+10. Initialize the cluster(** Run Only on the Master **)
+--> sudo kubeadm init --pod-network-cidr=10.244.0.0/16
+
+
+11. Set up local kubeconfig:
+--> mkdir -p $HOME/.kube
+--> sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+--> sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+
+12. Apply Flannel CNI network overlay:
+--> kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/bc79dd1505b0c8681ece4de4c0d86c5cd2643275/Documentation/kube-flannel.yml
+
+13. Join the worker nodes to the cluster:
+--> kubeadm join ["token no. from the kubeadm init command"]
+
+14. Verify the worker nodes to the cluster:
+--> kubectl get nodes
+
+

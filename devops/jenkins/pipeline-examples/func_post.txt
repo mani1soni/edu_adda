@@ -1,0 +1,43 @@
+def Notification(buildStatus) {
+    def status
+
+    switch (buildStatus) {
+        case 'SUCCESS':
+            status = 'is now green again!'
+            break
+
+        case 'UNSTABLE':
+            status = 'has become unstable..'
+            break
+
+        case 'FAILURE':
+            status = 'has turned RED :('
+            break
+    }
+
+    emailext (
+        subject: "Job '${env.JOB_NAME}' ${status}",
+        body: "See ${env.BUILD_URL} for more details",
+        to: "manish.soni8403@gmail.com"
+    )
+}
+
+pipeline {
+    agent any
+    stages{
+    
+        
+        stage("test"){
+            steps{
+                sh "python3 Python-Scripts/merge_sort.py"
+            }
+        }
+        
+    }
+    post {
+        changed {
+            // Will trigger only when job status changes: GREEN -> RED, RED -> GREEN, etc
+            Notification(currentBuild.currentResult)
+        }
+    }
+}

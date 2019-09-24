@@ -1,0 +1,3 @@
+kubeadm join 172.31.125.125:6443 --token x740iq.2cga0fcgswhi6yd2 \
+    --discovery-token-ca-cert-hash sha256:78256915ebe4c33f4e773e0449eff085baff27245c40651884a5f7c9c641bd8e 
+

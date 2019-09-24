@@ -1,0 +1,29 @@
+pipeline{
+    agent any
+    stages{
+        stage('clone') {
+            parallel{
+                stage("cloning"){
+                    
+                    steps {
+                     
+                        sh "python3 Python-Scripts/merge_sort.py"
+                    }
+                }
+                stage('git clone'){
+                    steps{
+                        
+                        sh "python3  Python-Scripts/merge_sort.py "
+                        
+                    }
+                    
+                }
+                
+            }
+            
+        }
+        
+    }
+    
+}
+

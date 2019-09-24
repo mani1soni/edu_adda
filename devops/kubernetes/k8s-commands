@@ -1,0 +1,68 @@
+kubectl get pods -o wide
+
+kubect get services
+
+kubectl exec busybox -- curl  10.99.249.100:80(ClusterIP of another container)
+
+
+kubectl cluster-info
+
+kubectl config view---> to view k8s config yml
+
+kubectl describe nodes--> detail of all nodes
+
+kubectl describe pods
+
+kubectl api-resources
+
+For creating namespace-:->
+	--> kubectl create ns my-ns
+	Running pod in own namespace and do various operations-:->
+		--> kubectl run test --image=chadmcrowell/kubectl-proxy -n my-ns
+		--> kubectl get pods -n my-ns
+		--> kubectl exec -it test-54776597d6-tqcrg  -n my-ns sh
+--> kubectl get serviceaccounts
+--> kubectl run nginx --image=nginx
+--> kubectl port-forward nginx-7bb7cd8db5-gvkzf 8081:80 (pod name by kubectl get pods)
+
+--:-->> For logs 
+  :--> kubectl logs nginx-7bb7cd8db5-gvkzf
+
+---: For container Troubleshooting :---
+					   [Enter-Commands]
+--> kubectl exec -it nginx-7bb7cd8db5-gvkzf --nginx -v	
+
+---: For exposing port :---
+---> kubectl expose deployment nginx --port 80  --type NodePort
+
+----------: For taking snapshot of pods :-------------------
+
+--> download th etcd
+
+--> wget https://github.com/etcd-io/etcd/releases/download/v3.3.12/etcd-v3.3.12-linux-amd64.tar.gz
+--> tar xvf etcd-v3.3.12-linux-amd64.tar.gz
+--> sudo mv etcd-v3.3.12-linux-amd64/etcd* /usr/local/bin
+--> Take snapshot--> sudo ETCDCTL_API=3 etcdctl snapshot save snapshot.db --cacert /etc/kubernetes/pki/etcd/server.crt --cert /etc/kubernetes/pki/etcd/ca.crt --key /etc/kubernetes/pki/etcd/ca.key
+
+--->  View that the snapshot was successful <---
+--> ETCDCTL_API=3 etcdctl --write-out=table snapshot status snapshot.db
+
+zip up the contents of etcd directory and cpy to another server
+--> sudo tar -zcvf etcd.tar.gz etcd
+
+ 
+Link--:-->  https://github.com/etcd-io/etcd/blob/master/Documentation/op-guide/recovery.md
+
+--> For updating image  <---
+                   [Service name]   
+kubectl set image deployments/kubernetes-bootcamp kubernetes-bootcamp=jocatalin/kubernetes-bootcamp:v2
+
+---> For rollout status  <-----
+kubectl rollout status deployments/kubernetes-bootcamp
+
+--> For rolback to previous version <-------
+
+kubectl rollout undo deployments/kubernetes-bootcamp
+
+
+

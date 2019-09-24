@@ -1,0 +1,24 @@
+************************Install Java-8*****************************************
+
+-> In Ubuntu
+1. sudo apt install open-8-jdk
+2. sudo apt install openjdk-8-jre
+3. Set java path:
+------>export JAVA_HOME=/usr/lib/jvm/(java-8-amd_file)
+------>export PATH=$PATH:$JAVA_HOME/bin
+
+*************************Install Jenkins***************************************
+
+4. wget -q -O - http://pkg.jenkins-ci.org/debian/jenkins-ci.org.key | apt-key add -
+
+5. echo deb http://pkg.jenkins-ci.org/debian binary/ > /etc/apt/sources.list.d/jenkins.list
+
+6. apt update
+
+7. apt install jenkins
+
+Note:::---> if open-8-jdk not found then Follow:-
+		$ sudo add-apt-repository ppa:openjdk-r/ppa
+		$ sudo apt-get update
+		$ sudo apt-get install openjdk-8-jdk
+
