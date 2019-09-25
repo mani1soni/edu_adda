@@ -53,6 +53,14 @@ edu_adda is  an open source initiative, where anyone can share their knowledge b
 * [devops](https://devops.com/)
 * [AWS](https://aws.amazon.com/)
 
+## Maintainers
+
+| <img alt="Manish Soni" src="https://avatars3.githubusercontent.com/u/30206849?s=460&v=4" height="70"   />                                                                                                                  |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Manish Soni](mailto:manish.soni8403@gmail.com)<br><strong>Twitter</strong>: [@manisomanish](https://twitter.com/manisomanish)<br><strong>Github</strong>: [@mani1soni](https://github.com/mani1soni)<br>_DevOps Engineer_ |
+
+
+
 
 
 ## License
