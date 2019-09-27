@@ -12,6 +12,7 @@
 [![PRs Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](http://makeapullrequest.com) [![License](https://img.shields.io/badge/license-GPL-green.svg)](LICENSE)
 
 edu_adda is  an open source initiative, where anyone can share their knowledge by contributions.
+</div>
 
 ## Contributions 
 
