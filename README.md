@@ -1,3 +1,12 @@
+<div align="center" id="top">
+	<br>
+	<br>
+	<br>
+	<img width="500" height="350" src="https://github.com/mani1soni/edu_adda/raw/master/logo/edu_adda.png" >
+	<br>
+	<br>
+	<br>
+        
 # edu_adda
 
 [![PRs Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](http://makeapullrequest.com) [![License](https://img.shields.io/badge/license-GPL-green.svg)](LICENSE)
