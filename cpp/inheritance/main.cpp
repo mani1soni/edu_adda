@@ -1,5 +1,5 @@
 #include <iostream>
-#include "lab7.cpp"
+#include "inheritanceClasses.cpp"
 using namespace std;
 
 

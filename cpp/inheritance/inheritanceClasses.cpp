@@ -1,4 +1,4 @@
-#include "lab7.h"
+#include "inheritanceHeader.h"
 
 
 ////ADT helper class
