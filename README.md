@@ -62,6 +62,7 @@ edu_adda is  an open source initiative, where anyone can share their knowledge b
 * [R](https://www.r-project.org)
 * [devops](https://devops.com/)
 * [AWS](https://aws.amazon.com/)
+* [PHP](https://www.php.net/)
 
 ## Maintainers
 
