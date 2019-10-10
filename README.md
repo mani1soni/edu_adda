@@ -59,6 +59,7 @@ edu_adda is  an open source initiative, where anyone can share their knowledge b
 * [groovy](https://groovy-lang.org/)
 * [java](https://www.java.com/en/)
 * [go](https://golang.org/)
+* [NodeJS](https://nodejs.org/)
 * [R](https://www.r-project.org)
 * [devops](https://devops.com/)
 * [AWS](https://aws.amazon.com/)
