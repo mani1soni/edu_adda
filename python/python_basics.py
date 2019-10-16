@@ -37,5 +37,16 @@ print(f)
 g = a//b            # to divide two numbers which returns answer as integer
 print(g)
 
+p = a**b            # for a raise to the power of b
+print(p)
 
+# String introduction
+s = "hello world"   
+print(s[:6])       # string slicing
+
+print(s[:-2])      # string slicing from end
+
+print( s**2)       # print same string two times
+
+print(s+"s")       # joining two strings
 
