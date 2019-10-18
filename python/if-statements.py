@@ -36,3 +36,15 @@ for i in list:
         print("the " + str(i) + ". element of the list is 2")
     elif list[i-1] == 3:
         print("the " + str(i) + ". element of the list is 3")
+
+# The fourth example allows for a loop to be exited.
+
+# Example 3:
+for i in list:
+    if list[i-1] == 1:
+        print("the "+str(i)+". element of the list is 1")
+    elif list[i-1] == 2:
+        print("the " + str(i) + ". element of the list is 2")
+    elif list[i-1] == 3:
+        print("This loop only supports searching 2 items in a list. Exiting loop...")
+        break
