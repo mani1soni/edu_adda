@@ -8,3 +8,18 @@ int numberReverse(number){
   }
   return reverse;
 }
+
+
+//Using recursion method
+
+long numberReverse(long number) {
+   static long reverse = 0;
+   
+   if (number == 0)
+      return 0;
+   
+   reverse = reverse * 10;
+   reverse = reverse + number % 10;
+   numberReverse(number/10);
+   return reverse;
+}
