@@ -59,15 +59,17 @@ edu_adda is  an open source initiative, where anyone can share their knowledge b
 * [groovy](https://groovy-lang.org/)
 * [java](https://www.java.com/en/)
 * [go](https://golang.org/)
+* [NodeJS](https://nodejs.org/)
 * [R](https://www.r-project.org)
 * [devops](https://devops.com/)
 * [AWS](https://aws.amazon.com/)
+* [PHP](https://www.php.net/)
 
 ## Maintainers
 
 | <img alt="Manish Soni" src="https://avatars3.githubusercontent.com/u/30206849?s=460&v=4" height="70"   />                                                                                                                  |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Manish Soni](https://www.linkedin.com/in/manisomanish/)<br><strong>Twitter</strong>: [@manisomanish](https://twitter.com/manisomanish)<br><strong>Github</strong>: [@mani1soni](https://github.com/mani1soni)<br>_DevOps Engineer_ |
+| [Manish Soni](https://mani1soni.github.io/)<br><strong>Twitter</strong>: [@manisomanish](https://twitter.com/manisomanish)<br><strong>Github</strong>: [@mani1soni](https://github.com/mani1soni)<br> <strong>Linkedin<strong>: [@manisomanish](https://www.linkedin.com/in/manisomanish/)<br> _DevOps Engineer_ |
 
 
 
