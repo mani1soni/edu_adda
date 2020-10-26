@@ -1,0 +1,36 @@
+***************************Git Pull Script in development branch *************************************
+
+(--> Go Passwordless)
+1. Set SSH Key On Github:-
+	Steps:- ->Generate SSH Key by "ssh-keygen" if you have already keys please  Ignore this step.
+
+		->Go to  ~/.ssh directory and copy public-key(default location-  ~/.ssh/id_rsa.pub)
+
+		->Go to Github.com and in settings ADD SSH key.
+
+		->fire command "ssh -T git@github.com" from terminal to test it.
+
+		-> if you have any problem please go through the following Link
+		::--> Link:- https://help.github.com/en/enterprise/2.15/user/articles/adding-a-new-ssh-key-to-your-github-account
+
+
+
+2. use "SSH" clone link to clone any repo, if you already have cloned repo by "HTTPS" link then use following steps-
+
+	1. in repo directory run following commands to set new url
+
+	--> git remote set-url origin "put new ssh clone url here"
+	--> git remote -v [For checking remote url status].
+
+
+3. In Shell-script--> change your git repo path, and run the script.
+		      For run the shell script--> use "/.git-pull.sh" or "bash 'scripts path'".
+
+4. Make script executable by given appropriate permission:-
+
+---> chmod +x script.sh
+
+5. Then added this script in your ~/.bashrc file as a alias ans source it.
+---> alias pull='bash ~/path-to-script.sh/'
+
+6. fire command 'pull' before working!!!! !!Cheers!! 
