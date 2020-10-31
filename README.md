@@ -2,7 +2,7 @@
 	<br>
 	<br>
 	<br>
-	<img width="500" height="350" src="https://github.com/mani1soni/edu_adda/raw/master/logo/edu_adda.png" >
+	<img width="500" height="350" src="https://raw.githubusercontent.com/mani1soni/edu_adda/master/logo/edu_adda.png" >
 	<br>
 	<br>
 	<br>
@@ -64,6 +64,8 @@ edu_adda is  an open source initiative, where anyone can share their knowledge b
 * [devops](https://devops.com/)
 * [AWS](https://aws.amazon.com/)
 * [PHP](https://www.php.net/)
+* [ReactJS](https://reactjs.org/)
+
 
 ## Maintainers
 

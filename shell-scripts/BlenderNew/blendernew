@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+project=$1
+
+
+
+if [[ -d $project ]]; then 
+
+	echo "Project exists"
+
+else
+	
+	mkdir -p $(pwd)/$project/{Output,Texture/NormalMaps,Blender_files,Others} 
+	echo "Wallah!!!"
+       	echo "Project $project's creation done."
+fi
