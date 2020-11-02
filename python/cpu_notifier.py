@@ -15,6 +15,8 @@ def cpu_Usage():
        print(cpu)
        return cpu>20
 
+diskcheck()
+cpu_Usage()
 
 if not diskcheck or not cpu_Usage:
        print('error')
