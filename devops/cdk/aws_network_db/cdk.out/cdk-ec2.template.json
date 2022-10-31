@@ -1,0 +1,722 @@
+{
+ "Resources": {
+  "myBastionInstanceSecurityGroupAD76EC90": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "cdk-ec2/myBastion/Resource/InstanceSecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Internet access SSH",
+      "FromPort": 22,
+      "IpProtocol": "tcp",
+      "ToPort": 22
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "myBastionHostLinux"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCB9E5F0B4BD23A326"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myBastion/Resource/InstanceSecurityGroup/Resource"
+   }
+  },
+  "myBastionInstanceRole80686C0E": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": {
+         "Fn::Join": [
+          "",
+          [
+           "ec2.",
+           {
+            "Ref": "AWS::URLSuffix"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "myBastionHostLinux"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myBastion/Resource/InstanceRole/Resource"
+   }
+  },
+  "myBastionInstanceRoleDefaultPolicy1F13358F": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "ssmmessages:*",
+        "ssm:UpdateInstanceInformation",
+        "ec2messages:*"
+       ],
+       "Effect": "Allow",
+       "Resource": "*"
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "myBastionInstanceRoleDefaultPolicy1F13358F",
+    "Roles": [
+     {
+      "Ref": "myBastionInstanceRole80686C0E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myBastion/Resource/InstanceRole/DefaultPolicy/Resource"
+   }
+  },
+  "myBastionInstanceProfileCE4FD19D": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "myBastionInstanceRole80686C0E"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myBastion/Resource/InstanceProfile"
+   }
+  },
+  "myBastion25A2B620": {
+   "Type": "AWS::EC2::Instance",
+   "Properties": {
+    "AvailabilityZone": {
+     "Fn::Select": [
+      0,
+      {
+       "Fn::GetAZs": ""
+      }
+     ]
+    },
+    "IamInstanceProfile": {
+     "Ref": "myBastionInstanceProfileCE4FD19D"
+    },
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t2.micro",
+    "KeyName": "qwarke",
+    "SecurityGroupIds": [
+     {
+      "Fn::GetAtt": [
+       "myBastionInstanceSecurityGroupAD76EC90",
+       "GroupId"
+      ]
+     }
+    ],
+    "SubnetId": {
+     "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCPublicSubnet1SubnetB4246D30D84F935B"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "myBastionHostLinux"
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash"
+    }
+   },
+   "DependsOn": [
+    "myBastionInstanceRoleDefaultPolicy1F13358F",
+    "myBastionInstanceRole80686C0E"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myBastion/Resource/Resource"
+   }
+  },
+  "myALB18A49813": {
+   "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+   "Properties": {
+    "LoadBalancerAttributes": [
+     {
+      "Key": "deletion_protection.enabled",
+      "Value": "false"
+     }
+    ],
+    "Name": "myALB",
+    "Scheme": "internet-facing",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "myALBSecurityGroupF245F258",
+       "GroupId"
+      ]
+     }
+    ],
+    "Subnets": [
+     {
+      "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCPublicSubnet1SubnetB4246D30D84F935B"
+     },
+     {
+      "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCPublicSubnet2Subnet74179F3969CC10AD"
+     }
+    ],
+    "Type": "application"
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myALB/Resource"
+   }
+  },
+  "myALBSecurityGroupF245F258": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "Automatically created Security Group for ELB cdkec2myALBD2D7092E",
+    "SecurityGroupIngress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Internet access ALB 80",
+      "FromPort": 80,
+      "IpProtocol": "tcp",
+      "ToPort": 80
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCB9E5F0B4BD23A326"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myALB/SecurityGroup/Resource"
+   }
+  },
+  "myALBSecurityGrouptocdkec2myASGInstanceSecurityGroup26DB0856807807F3B8": {
+   "Type": "AWS::EC2::SecurityGroupEgress",
+   "Properties": {
+    "GroupId": {
+     "Fn::GetAtt": [
+      "myALBSecurityGroupF245F258",
+      "GroupId"
+     ]
+    },
+    "IpProtocol": "tcp",
+    "Description": "ALB access 80 port of EC2 in Autoscaling Group",
+    "DestinationSecurityGroupId": {
+     "Fn::GetAtt": [
+      "myASGInstanceSecurityGroup77B88BA5",
+      "GroupId"
+     ]
+    },
+    "FromPort": 80,
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myALB/SecurityGroup/to cdkec2myASGInstanceSecurityGroup26DB0856:80"
+   }
+  },
+  "myALBmy80B990410C": {
+   "Type": "AWS::ElasticLoadBalancingV2::Listener",
+   "Properties": {
+    "DefaultActions": [
+     {
+      "TargetGroupArn": {
+       "Ref": "myALBmy80addTargetGroupGroup1569733D"
+      },
+      "Type": "forward"
+     }
+    ],
+    "LoadBalancerArn": {
+     "Ref": "myALB18A49813"
+    },
+    "Port": 80,
+    "Protocol": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myALB/my80/Resource"
+   }
+  },
+  "myALBmy80addTargetGroupGroup1569733D": {
+   "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+   "Properties": {
+    "Port": 80,
+    "Protocol": "HTTP",
+    "TargetGroupAttributes": [
+     {
+      "Key": "stickiness.enabled",
+      "Value": "false"
+     }
+    ],
+    "TargetType": "instance",
+    "VpcId": {
+     "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCB9E5F0B4BD23A326"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myALB/my80/addTargetGroupGroup/Resource"
+   }
+  },
+  "myASGInstanceSecurityGroup77B88BA5": {
+   "Type": "AWS::EC2::SecurityGroup",
+   "Properties": {
+    "GroupDescription": "cdk-ec2/myASG/InstanceSecurityGroup",
+    "SecurityGroupEgress": [
+     {
+      "CidrIp": "0.0.0.0/0",
+      "Description": "Allow all outbound traffic by default",
+      "IpProtocol": "-1"
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "cdk-ec2/myASG"
+     }
+    ],
+    "VpcId": {
+     "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCB9E5F0B4BD23A326"
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myASG/InstanceSecurityGroup/Resource"
+   }
+  },
+  "myASGInstanceSecurityGroupfromcdkec2myALBSecurityGroup3D54416680EEAA95FE": {
+   "Type": "AWS::EC2::SecurityGroupIngress",
+   "Properties": {
+    "IpProtocol": "tcp",
+    "Description": "ALB access 80 port of EC2 in Autoscaling Group",
+    "FromPort": 80,
+    "GroupId": {
+     "Fn::GetAtt": [
+      "myASGInstanceSecurityGroup77B88BA5",
+      "GroupId"
+     ]
+    },
+    "SourceSecurityGroupId": {
+     "Fn::GetAtt": [
+      "myALBSecurityGroupF245F258",
+      "GroupId"
+     ]
+    },
+    "ToPort": 80
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myASG/InstanceSecurityGroup/from cdkec2myALBSecurityGroup3D544166:80"
+   }
+  },
+  "myASGInstanceRole5AF7F92F": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": {
+         "Fn::Join": [
+          "",
+          [
+           "ec2.",
+           {
+            "Ref": "AWS::URLSuffix"
+           }
+          ]
+         ]
+        }
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "Value": "cdk-ec2/myASG"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myASG/InstanceRole/Resource"
+   }
+  },
+  "myASGInstanceProfile053766AB": {
+   "Type": "AWS::IAM::InstanceProfile",
+   "Properties": {
+    "Roles": [
+     {
+      "Ref": "myASGInstanceRole5AF7F92F"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myASG/InstanceProfile"
+   }
+  },
+  "myASGLaunchConfigA0CD8C73": {
+   "Type": "AWS::AutoScaling::LaunchConfiguration",
+   "Properties": {
+    "ImageId": {
+     "Ref": "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter"
+    },
+    "InstanceType": "t2.micro",
+    "IamInstanceProfile": {
+     "Ref": "myASGInstanceProfile053766AB"
+    },
+    "KeyName": "qwarke",
+    "SecurityGroups": [
+     {
+      "Fn::GetAtt": [
+       "myASGInstanceSecurityGroup77B88BA5",
+       "GroupId"
+      ]
+     }
+    ],
+    "UserData": {
+     "Fn::Base64": "#!/bin/bash\nsudo yum update -y\nsudo yum -y install httpd php\nsudo chkconfig httpd on\nsudo service httpd start"
+    }
+   },
+   "DependsOn": [
+    "myASGInstanceRole5AF7F92F"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myASG/LaunchConfig"
+   }
+  },
+  "myASG6C9F5AC0": {
+   "Type": "AWS::AutoScaling::AutoScalingGroup",
+   "Properties": {
+    "MaxSize": "2",
+    "MinSize": "2",
+    "DesiredCapacity": "2",
+    "LaunchConfigurationName": {
+     "Ref": "myASGLaunchConfigA0CD8C73"
+    },
+    "Tags": [
+     {
+      "Key": "Name",
+      "PropagateAtLaunch": true,
+      "Value": "cdk-ec2/myASG"
+     }
+    ],
+    "TargetGroupARNs": [
+     {
+      "Ref": "myALBmy80addTargetGroupGroup1569733D"
+     }
+    ],
+    "VPCZoneIdentifier": [
+     {
+      "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCPrivateSubnet1Subnet8BCA10E01F79A1B7"
+     },
+     {
+      "Fn::ImportValue": "cdk-vpc:ExportsOutputRefVPCPrivateSubnet2SubnetCFCDAA7AB22CF85D"
+     }
+    ]
+   },
+   "UpdatePolicy": {
+    "AutoScalingScheduledAction": {
+     "IgnoreUnmodifiedGroupSizeProperties": true
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/myASG/ASG"
+   }
+  },
+  "CDKMetadata": {
+   "Type": "AWS::CDK::Metadata",
+   "Properties": {
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/2VQTU/DMAz9LbtnYRscuLIJjUmVqFruyEvTzixNqsQBqqr/naRlpWyn+H342c6GP6z5agFfbimK81LhkXc5gTizQL13Umx4twVHaPSLcZSg9t/soB2BFpLlUniL1O6t8Q3blfqGmKzX4nNlpXM39EEPfM8Qat5lRg2dw5sahaKN8K+6xKfWlKhkz6SKywploDiCChLq6jPc8NQ0oQfiHUnQtoMmbcz4h+c+dCT1r+dSz/Q3sJWk6dIZ7Bl4Mk6ACtPD7ADyEUzuBLwWp53RJVbeDnmRvrb2fWRfPTWehsvBQi0pLJJJZ7wdP3Zeh8gCY1zP0pZORt/d80e+Xi0+HOLSek1YS56N7w9LGpF9/gEAAA=="
+   },
+   "Metadata": {
+    "aws:cdk:path": "cdk-ec2/CDKMetadata/Default"
+   },
+   "Condition": "CDKMetadataAvailable"
+  }
+ },
+ "Outputs": {
+  "myBastionBastionHostIdF36DDFD3": {
+   "Description": "Instance ID of the bastion host. Use this to connect via SSM Session Manager",
+   "Value": {
+    "Ref": "myBastion25A2B620"
+   }
+  },
+  "Output": {
+   "Value": {
+    "Fn::GetAtt": [
+     "myALB18A49813",
+     "DNSName"
+    ]
+   }
+  },
+  "ExportsOutputFnGetAttmyASGInstanceSecurityGroup77B88BA5GroupId660AC717": {
+   "Value": {
+    "Fn::GetAtt": [
+     "myASGInstanceSecurityGroup77B88BA5",
+     "GroupId"
+    ]
+   },
+   "Export": {
+    "Name": "cdk-ec2:ExportsOutputFnGetAttmyASGInstanceSecurityGroup77B88BA5GroupId660AC717"
+   }
+  }
+ },
+ "Parameters": {
+  "SsmParameterValueawsserviceamiamazonlinuxlatestamzn2amihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  },
+  "SsmParameterValueawsserviceamiamazonlinuxlatestamznamihvmx8664gp2C96584B6F00A464EAD1953AFF4B05118Parameter": {
+   "Type": "AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>",
+   "Default": "/aws/service/ami-amazon-linux-latest/amzn-ami-hvm-x86_64-gp2"
+  },
+  "BootstrapVersion": {
+   "Type": "AWS::SSM::Parameter::Value<String>",
+   "Default": "/cdk-bootstrap/hnb659fds/version",
+   "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]"
+  }
+ },
+ "Conditions": {
+  "CDKMetadataAvailable": {
+   "Fn::Or": [
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "af-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-northeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ap-southeast-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "ca-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "cn-northwest-1"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-central-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-north-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-2"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "eu-west-3"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "me-south-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "sa-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-east-2"
+       ]
+      }
+     ]
+    },
+    {
+     "Fn::Or": [
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-1"
+       ]
+      },
+      {
+       "Fn::Equals": [
+        {
+         "Ref": "AWS::Region"
+        },
+        "us-west-2"
+       ]
+      }
+     ]
+    }
+   ]
+  }
+ },
+ "Rules": {
+  "CheckBootstrapVersion": {
+   "Assertions": [
+    {
+     "Assert": {
+      "Fn::Not": [
+       {
+        "Fn::Contains": [
+         [
+          "1",
+          "2",
+          "3",
+          "4",
+          "5"
+         ],
+         {
+          "Ref": "BootstrapVersion"
+         }
+        ]
+       }
+      ]
+     },
+     "AssertDescription": "CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI."
+    }
+   ]
+  }
+ }
+}
